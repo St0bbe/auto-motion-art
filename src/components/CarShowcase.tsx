@@ -46,12 +46,15 @@ function Part({
   const start = index / total;
   const end = (index + 1) / total;
 
-  const opacity = useTransform(
-    scrollYProgress,
-    [start - 0.05, start + 0.05, end - 0.05, end + 0.05],
-    [0, 1, 1, 0]
-  );
-  const y = useTransform(scrollYProgress, [start, end], [40, -40]);
+  const clamp = (n: number) => Math.max(0, Math.min(1, n));
+  const o1 = clamp(start - 0.05);
+  const o2 = clamp(start + 0.05);
+  const o3 = clamp(end - 0.05);
+  const o4 = clamp(end + 0.05);
+  // ensure strictly increasing
+  const stops = [o1, Math.max(o2, o1 + 0.0001), Math.max(o3, o2 + 0.0002), Math.max(o4, o3 + 0.0001)];
+  const opacity = useTransform(scrollYProgress, stops, [0, 1, 1, 0]);
+  const y = useTransform(scrollYProgress, [clamp(start), clamp(end)], [40, -40]);
 
   return (
     <motion.div
