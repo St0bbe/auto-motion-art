@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { Wrench, Menu, X } from "lucide-react";
-
-const links = [
-  { href: "#servicos", label: "Serviços" },
-  { href: "#diferenciais", label: "Diferenciais" },
-  { href: "#resultados", label: "Resultados" },
-  { href: "#depoimentos", label: "Depoimentos" },
-  { href: "#contato", label: "Contato" },
-];
+import { navigationLinks, siteConfig } from "@/config/site";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -37,13 +30,17 @@ export function Navbar() {
               <Wrench className="h-5 w-5 text-background" strokeWidth={2.5} />
             </span>
             <div className="leading-tight">
-              <div className="font-display text-sm tracking-[0.2em] text-amber-glow">TORQUE</div>
-              <div className="text-[10px] tracking-[0.3em] text-muted-foreground">MOTORS · WORKSHOP</div>
+              <div className="font-display text-sm tracking-[0.2em] text-amber-glow">
+                {siteConfig.shortName}
+              </div>
+              <div className="text-[10px] tracking-[0.3em] text-muted-foreground">
+                {siteConfig.brandSuffix}
+              </div>
             </div>
           </a>
 
           <ul className="hidden md:flex items-center gap-1">
-            {links.map((l) => (
+            {navigationLinks.map((l) => (
               <li key={l.href}>
                 <a
                   href={l.href}
@@ -64,7 +61,7 @@ export function Navbar() {
           </a>
 
           <button
-            aria-label="Menu"
+            aria-label="Abrir menu"
             onClick={() => setOpen((v) => !v)}
             className="md:hidden grid place-items-center h-10 w-10 rounded-xl glass"
           >
@@ -74,7 +71,7 @@ export function Navbar() {
 
         {open && (
           <div className="md:hidden mt-2 glass-strong rounded-2xl p-4 flex flex-col gap-1 animate-in fade-in slide-in-from-top-2">
-            {links.map((l) => (
+            {navigationLinks.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
