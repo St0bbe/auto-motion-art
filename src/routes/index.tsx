@@ -9,20 +9,21 @@ import { Testimonials } from "@/components/Testimonials";
 import { CTASection } from "@/components/CTASection";
 import { Footer } from "@/components/Footer";
 import { WhatsAppFab } from "@/components/WhatsAppFab";
-import { siteConfig } from "@/config/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: siteConfig.title },
+      { title: "Torque Motors · Oficina automotiva premium" },
       {
         name: "description",
-        content: siteConfig.description,
+        content:
+          "Oficina automotiva premium: diagnóstico computadorizado, manutenção e performance com tecnologia e transparência. Agende pelo WhatsApp.",
       },
-      { property: "og:title", content: siteConfig.title },
+      { property: "og:title", content: "Torque Motors · Oficina automotiva premium" },
       {
         property: "og:description",
-        content: siteConfig.description,
+        content:
+          "Diagnóstico, manutenção e performance com tecnologia e transparência.",
       },
     ],
     links: [
@@ -39,7 +40,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main className="relative overflow-x-hidden">
+    <main className="relative">
       <Navbar />
       <Hero />
       <CarShowcase />

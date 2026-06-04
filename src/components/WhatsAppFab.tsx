@@ -1,10 +1,9 @@
 import { MessageCircle } from "lucide-react";
-import { getWhatsAppUrl } from "@/config/site";
 
 export function WhatsAppFab() {
   return (
     <a
-      href={getWhatsAppUrl()}
+      href="https://wa.me/5511999999999?text=Olá! Gostaria de agendar um serviço."
       target="_blank"
       rel="noreferrer"
       aria-label="Falar no WhatsApp"
