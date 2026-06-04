@@ -33,6 +33,9 @@ const parts = [
   },
 ];
 
+const horizontalStart = 0.08;
+const horizontalEnd = 0.92;
+
 export function CarShowcase() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
@@ -42,17 +45,18 @@ export function CarShowcase() {
 
   const x = useTransform(
     scrollYProgress,
-    [0, 1],
-    ["0vw", `-${(parts.length - 1) * 100}vw`],
+    [0, horizontalStart, horizontalEnd, 1],
+    ["0vw", "0vw", `-${(parts.length - 1) * 100}vw`, `-${(parts.length - 1) * 100}vw`],
   );
-  const wheelRotate = useTransform(scrollYProgress, [0, 1], [0, 1440]);
+  const wheelRotate = useTransform(scrollYProgress, [horizontalStart, horizontalEnd], [0, 1440]);
+  const progressScale = useTransform(scrollYProgress, [horizontalStart, horizontalEnd], [0, 1]);
 
   return (
     <section
       ref={sectionRef}
       id="anatomia"
       className="relative"
-      style={{ height: `${parts.length * 100}vh` }}
+      style={{ height: `${(parts.length + 2) * 100}vh` }}
     >
       <div className="sticky top-0 h-screen overflow-hidden bg-gradient-carbon">
         <div className="absolute inset-0 grid-bg opacity-30" />
@@ -127,7 +131,7 @@ export function CarShowcase() {
           <div className="mx-auto h-[3px] max-w-md overflow-hidden rounded-full bg-border">
             <motion.div
               className="h-full bg-gradient-ember"
-              style={{ scaleX: scrollYProgress, transformOrigin: "left" }}
+              style={{ scaleX: progressScale, transformOrigin: "left" }}
             />
           </div>
         </div>
