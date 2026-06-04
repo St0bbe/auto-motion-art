@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { useIsMobile } from "@/hooks/use-mobile";
 import carSide from "@/assets/car-side.png";
 import partEngine from "@/assets/part-engine.jpg";
 import partBrake from "@/assets/part-brake.jpg";
