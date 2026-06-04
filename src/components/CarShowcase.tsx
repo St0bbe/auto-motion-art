@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import carSide from "@/assets/car-side.png";
 import partEngine from "@/assets/part-engine.jpg";
 import partBrake from "@/assets/part-brake.jpg";
@@ -33,7 +34,65 @@ const parts = [
   },
 ];
 
-export function CarShowcase() {
+function PartCard({
+  part,
+  index,
+  total,
+}: {
+  part: (typeof parts)[number];
+  index: number;
+  total: number;
+}) {
+  return (
+    <div className="relative z-10 grid w-full max-w-6xl items-center gap-8 lg:grid-cols-2 lg:gap-12">
+      <div className="relative mx-auto aspect-square w-full max-w-[280px] overflow-hidden rounded-3xl shadow-elevated noise sm:max-w-md">
+        <img
+          src={part.img}
+          alt={part.title}
+          width={800}
+          height={800}
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent" />
+      </div>
+
+      <div className="mx-auto max-w-xl text-center lg:text-left">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
+          <span className="h-1.5 w-1.5 rounded-full bg-amber-glow" />
+          {part.tag} · 0{index + 1}/0{total}
+        </div>
+        <h3 className="font-display text-3xl uppercase leading-tight sm:text-5xl lg:text-6xl">
+          {part.title}
+        </h3>
+        <p className="mt-4 text-sm text-muted-foreground sm:text-lg">{part.desc}</p>
+      </div>
+    </div>
+  );
+}
+
+function MobileShowcase() {
+  return (
+    <section id="anatomia" className="relative bg-gradient-carbon py-20">
+      <div className="absolute inset-0 grid-bg opacity-30" />
+      <div className="relative px-4 text-center">
+        <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
+          Anatomia
+        </div>
+        <h2 className="mt-4 font-display text-3xl uppercase">
+          Cada peça <span className="text-gradient-ember">importa</span>
+        </h2>
+      </div>
+      <div className="relative mt-12 flex flex-col gap-16 px-4">
+        {parts.map((part, i) => (
+          <PartCard key={part.tag} part={part} index={i} total={parts.length} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function DesktopShowcase() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -50,19 +109,18 @@ export function CarShowcase() {
       className="relative bg-gradient-carbon"
       style={{ height: `${parts.length * 115}vh` }}
     >
-        <div className="sticky top-[72px] h-[calc(100vh-72px)] overflow-hidden">
-          <div className="absolute inset-0 grid-bg opacity-30" />
-          <div className="absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 bg-radial-glow opacity-60" />
+      <div className="sticky top-[72px] h-[calc(100vh-72px)] overflow-hidden">
+        <div className="absolute inset-0 grid-bg opacity-30" />
+        <div className="absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 bg-radial-glow opacity-60" />
 
-          <div className="absolute left-0 right-0 top-6 z-30 px-4 text-center sm:top-8">
-            <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
-              Rolagem lateral
-            </div>
-            <h2 className="mt-4 font-display text-3xl uppercase sm:text-5xl">
-              Cada peça <span className="text-gradient-ember">importa</span>
-            </h2>
+        <div className="absolute left-0 right-0 top-8 z-30 px-4 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
+            Rolagem lateral
           </div>
-
+          <h2 className="mt-4 font-display text-5xl uppercase">
+            Cada peça <span className="text-gradient-ember">importa</span>
+          </h2>
+        </div>
 
         <motion.div
           className="absolute left-0 top-0 z-10 flex h-full will-change-transform"
@@ -71,7 +129,7 @@ export function CarShowcase() {
           {parts.map((part, index) => (
             <article
               key={part.tag}
-              className="relative grid h-full w-screen shrink-0 place-items-center overflow-hidden px-4 pt-28 sm:px-8 sm:pt-32 lg:px-16"
+              className="relative grid h-full w-screen shrink-0 place-items-center overflow-hidden px-8 pt-40 lg:px-16"
             >
               <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-[92vw] max-w-[760px] -translate-x-1/2 -translate-y-1/2 opacity-20">
                 <img
@@ -92,30 +150,7 @@ export function CarShowcase() {
                 />
               </div>
 
-              <div className="relative z-10 grid w-full max-w-6xl items-center gap-8 lg:grid-cols-2 lg:gap-12">
-                <div className="relative mx-auto aspect-square w-full max-w-[320px] overflow-hidden rounded-3xl shadow-elevated noise sm:max-w-md">
-                  <img
-                    src={part.img}
-                    alt={part.title}
-                    width={800}
-                    height={800}
-                    loading="lazy"
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent" />
-                </div>
-
-                <div className="mx-auto max-w-xl text-center lg:text-left">
-                  <div className="mb-5 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
-                    <span className="h-1.5 w-1.5 rounded-full bg-amber-glow" />
-                    {part.tag} · 0{index + 1}/0{parts.length}
-                  </div>
-                  <h3 className="font-display text-4xl uppercase leading-tight sm:text-5xl lg:text-6xl">
-                    {part.title}
-                  </h3>
-                  <p className="mt-5 text-base text-muted-foreground sm:text-lg">{part.desc}</p>
-                </div>
-              </div>
+              <PartCard part={part} index={index} total={parts.length} />
             </article>
           ))}
         </motion.div>
@@ -130,8 +165,10 @@ export function CarShowcase() {
         </div>
       </div>
     </section>
-
-
-
   );
+}
+
+export function CarShowcase() {
+  const isMobile = useIsMobile();
+  return isMobile ? <MobileShowcase /> : <DesktopShowcase />;
 }
