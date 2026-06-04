@@ -48,7 +48,7 @@ export function CarShowcase() {
       ref={sectionRef}
       id="anatomia"
       className="relative"
-      style={{ height: `${(parts.length + 1) * 100}vh` }}
+      style={{ height: `${parts.length * 160}vh` }}
     >
       <div className="sticky top-0 h-screen overflow-hidden bg-gradient-carbon">
         <div className="absolute inset-0 grid-bg opacity-30" />
