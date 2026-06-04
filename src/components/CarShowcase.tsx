@@ -70,7 +70,7 @@ function PartCard({
   );
 }
 
-function MobileShowcase() {
+function MobileShowcase({ id }: { id?: string }) {
   return (
     <section id="anatomia" className="relative bg-gradient-carbon py-20">
       <div className="absolute inset-0 grid-bg opacity-30" />
