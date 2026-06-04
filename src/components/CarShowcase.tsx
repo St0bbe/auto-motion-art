@@ -129,8 +129,8 @@ export function CarShowcase() {
           </div>
         </div>
       </div>
-      </div>
     </section>
+
 
   );
 }
