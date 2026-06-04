@@ -72,7 +72,7 @@ function PartCard({
 
 function MobileShowcase({ id }: { id?: string }) {
   return (
-    <section id="anatomia" className="relative bg-gradient-carbon py-20">
+    <section id={id} className="relative bg-gradient-carbon py-20">
       <div className="absolute inset-0 grid-bg opacity-30" />
       <div className="relative px-4 text-center">
         <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
