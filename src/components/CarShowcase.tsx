@@ -34,7 +34,7 @@ const parts = [
 ];
 
 const maxProgress = parts.length - 1;
-const wheelSensitivity = 900;
+const wheelSensitivity = 700;
 
 export function CarShowcase() {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -51,31 +51,31 @@ export function CarShowcase() {
     const section = sectionRef.current;
     if (!section) return;
 
-    const sectionIsActive = () => {
-      const rect = section.getBoundingClientRect();
-      return rect.top <= 0 && rect.bottom >= window.innerHeight;
-    };
+    const isEnteringSection = (rect: DOMRect, goingDown: boolean) =>
+      goingDown && rect.top <= window.innerHeight * 0.35 && rect.bottom > window.innerHeight;
 
-    const keepSectionPinned = () => {
-      const rect = section.getBoundingClientRect();
+    const isInsideLockedSection = (rect: DOMRect) =>
+      rect.top <= 1 && rect.bottom >= window.innerHeight - 1;
+
+    const pinSection = (rect: DOMRect) => {
       if (Math.abs(rect.top) > 1) {
         window.scrollTo({ top: window.scrollY + rect.top, behavior: "auto" });
       }
     };
 
     const onWheel = (event: WheelEvent) => {
-      if (!sectionIsActive()) return;
-
-      const current = progressRef.current;
+      const rect = section.getBoundingClientRect();
       const goingDown = event.deltaY > 0;
       const goingUp = event.deltaY < 0;
-      const finishedToRight = current >= maxProgress && goingDown;
-      const finishedToLeft = current <= 0 && goingUp;
+      const current = progressRef.current;
+      const canMoveRight = goingDown && current < maxProgress;
+      const canMoveLeft = goingUp && current > 0;
+      const shouldLock = isInsideLockedSection(rect) || isEnteringSection(rect, goingDown);
 
-      if (finishedToRight || finishedToLeft) return;
+      if (!shouldLock || (!canMoveRight && !canMoveLeft)) return;
 
       event.preventDefault();
-      keepSectionPinned();
+      pinSection(rect);
       syncProgress(current + event.deltaY / wheelSensitivity);
     };
 
@@ -85,7 +85,7 @@ export function CarShowcase() {
 
   const x = `-${progress * 100}vw`;
   const wheelRotation = progress * 360;
-  const progressScale = (progress + 1) / parts.length;
+  const progressScale = Math.max(0.02, progress / maxProgress);
 
   return (
     <section ref={sectionRef} id="anatomia" className="relative h-screen overflow-hidden bg-gradient-carbon">
@@ -104,7 +104,7 @@ export function CarShowcase() {
       <motion.div
         className="absolute left-0 top-0 z-10 flex h-screen will-change-transform"
         animate={{ x }}
-        transition={{ type: "tween", duration: 0.08, ease: "linear" }}
+        transition={{ type: "tween", duration: 0.04, ease: "linear" }}
         style={{ width: `${parts.length * 100}vw` }}
       >
         {parts.map((part, index) => (
@@ -123,12 +123,12 @@ export function CarShowcase() {
               />
               <motion.div
                 animate={{ rotate: wheelRotation }}
-                transition={{ type: "tween", duration: 0.08, ease: "linear" }}
+                transition={{ type: "tween", duration: 0.04, ease: "linear" }}
                 className="absolute left-[22%] bottom-[12%] h-[18%] w-[18%] rounded-full border border-amber-glow/40"
               />
               <motion.div
                 animate={{ rotate: wheelRotation }}
-                transition={{ type: "tween", duration: 0.08, ease: "linear" }}
+                transition={{ type: "tween", duration: 0.04, ease: "linear" }}
                 className="absolute right-[20%] bottom-[12%] h-[18%] w-[18%] rounded-full border border-amber-glow/40"
               />
             </div>
@@ -166,7 +166,7 @@ export function CarShowcase() {
           <motion.div
             className="h-full bg-gradient-ember"
             animate={{ scaleX: progressScale }}
-            transition={{ type: "tween", duration: 0.08, ease: "linear" }}
+            transition={{ type: "tween", duration: 0.04, ease: "linear" }}
             style={{ transformOrigin: "left" }}
           />
         </div>
