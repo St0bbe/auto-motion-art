@@ -171,7 +171,7 @@ export function CarShowcase() {
   return (
     <>
       <div className="lg:hidden">
-        <MobileShowcase />
+        <MobileShowcase id="anatomia" />
       </div>
       <div className="hidden lg:block">
         <DesktopShowcase />
