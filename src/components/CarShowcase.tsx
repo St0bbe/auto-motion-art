@@ -37,42 +37,41 @@ export function CarShowcase() {
   const ref = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end end"],
+    offset: ["start start", "end start"],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0vw", `-${(parts.length - 1) * 100}vw`]);
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${(parts.length - 1) * 100}%`]);
   const wheelRotate = useTransform(scrollYProgress, [0, 1], [0, 1440]);
-  const progressScale = useTransform(scrollYProgress, [0.02, 0.98], [0, 1], { clamp: true });
+  const progressScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <section
       ref={ref}
       id="anatomia"
       className="relative"
-      style={{ height: `${parts.length * 100}vh` }}
+      style={{ height: `${(parts.length + 1) * 100}vh` }}
     >
       <div className="sticky top-0 h-screen overflow-hidden bg-gradient-carbon">
         <div className="absolute inset-0 grid-bg opacity-30" />
         <div className="absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 bg-radial-glow opacity-60" />
 
-        <div className="absolute inset-x-0 top-0 z-30 px-4 pt-20 text-center sm:pt-24">
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-30 px-4 pt-20 text-center sm:pt-24">
           <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
             Rolagem lateral
           </div>
-
           <h2 className="mt-4 font-display text-3xl uppercase sm:text-5xl">
             Cada peça <span className="text-gradient-ember">importa</span>
           </h2>
         </div>
 
         <motion.div
-          className="absolute left-0 top-0 z-10 flex h-screen will-change-transform"
-          style={{ x, width: `${parts.length * 100}vw` }}
+          className="absolute left-0 top-0 z-10 flex h-screen"
+          style={{ x, width: `${parts.length * 100}%` }}
         >
           {parts.map((part, index) => (
             <article
               key={part.tag}
-              className="relative grid h-screen w-screen shrink-0 place-items-center overflow-hidden px-4 sm:px-8 lg:px-16"
+              className="relative grid h-screen flex-1 place-items-center overflow-hidden px-4 sm:px-8 lg:px-16"
             >
               <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-[92vw] max-w-[760px] -translate-x-1/2 -translate-y-1/2 opacity-20">
                 <img
@@ -81,7 +80,7 @@ export function CarShowcase() {
                   width={1600}
                   height={800}
                   loading="lazy"
-                  className="w-full h-auto drop-shadow-[0_30px_60px_rgba(255,140,40,0.25)]"
+                  className="h-auto w-full drop-shadow-[0_30px_60px_rgba(255,140,40,0.25)]"
                 />
                 <motion.div
                   style={{ rotate: wheelRotate }}
@@ -111,11 +110,9 @@ export function CarShowcase() {
                     <span className="h-1.5 w-1.5 rounded-full bg-amber-glow" />
                     {part.tag} · 0{index + 1}/0{parts.length}
                   </div>
-
                   <h3 className="font-display text-4xl uppercase leading-tight sm:text-5xl lg:text-6xl">
                     {part.title}
                   </h3>
-
                   <p className="mt-5 text-base text-muted-foreground sm:text-lg">
                     {part.desc}
                   </p>
@@ -126,7 +123,7 @@ export function CarShowcase() {
         </motion.div>
 
         <div className="absolute bottom-6 left-0 right-0 z-30 px-4">
-          <div className="mx-auto max-w-md overflow-hidden rounded-full bg-border h-[3px]">
+          <div className="mx-auto h-[3px] max-w-md overflow-hidden rounded-full bg-border">
             <motion.div
               style={{ scaleX: progressScale, transformOrigin: "left" }}
               className="h-full bg-gradient-ember"
