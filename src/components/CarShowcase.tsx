@@ -168,6 +168,14 @@ function DesktopShowcase() {
 }
 
 export function CarShowcase() {
-  const isMobile = useIsMobile();
-  return isMobile ? <MobileShowcase /> : <DesktopShowcase />;
+  return (
+    <>
+      <div className="lg:hidden">
+        <MobileShowcase />
+      </div>
+      <div className="hidden lg:block">
+        <DesktopShowcase />
+      </div>
+    </>
+  );
 }
