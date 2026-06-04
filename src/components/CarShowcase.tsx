@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import carSide from "@/assets/car-side.png";
 import partEngine from "@/assets/part-engine.jpg";
 import partBrake from "@/assets/part-brake.jpg";
@@ -34,98 +33,69 @@ const parts = [
 ];
 
 export function CarShowcase() {
-  const sectionRef = useRef<HTMLDivElement | null>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  });
-
-  const x = useTransform(scrollYProgress, [0, 1], ["0vw", `-${(parts.length - 1) * 100}vw`]);
-  const wheelRotate = useTransform(scrollYProgress, [0, 1], [0, 1440]);
-
   return (
     <section
-      ref={sectionRef}
       id="anatomia"
-      className="relative"
-      style={{ height: `${parts.length * 160}vh` }}
+      className="relative overflow-hidden bg-gradient-carbon py-24 sm:py-32"
     >
-      <div className="sticky top-0 h-screen overflow-hidden bg-gradient-carbon">
-        <div className="absolute inset-0 grid-bg opacity-30" />
-        <div className="absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 bg-radial-glow opacity-60" />
+      <div className="absolute inset-0 grid-bg opacity-30" />
+      <div className="absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 bg-radial-glow opacity-40" />
+      <img
+        src={carSide}
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 w-[min(1100px,95vw)] -translate-x-1/2 -translate-y-1/2 opacity-[0.06]"
+      />
 
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-30 px-4 pt-20 text-center sm:pt-24">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-8">
+        <div className="text-center">
           <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
-            Rolagem lateral
+            Anatomia
           </div>
           <h2 className="mt-4 font-display text-3xl uppercase sm:text-5xl">
             Cada peça <span className="text-gradient-ember">importa</span>
           </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
+            Do motor às rodas — cuidamos de cada componente com diagnóstico preciso e peças de qualidade.
+          </p>
         </div>
 
-        <motion.div
-          className="absolute left-0 top-0 z-10 flex h-screen will-change-transform"
-          style={{ x, width: `${parts.length * 100}vw` }}
-        >
+        <div className="mt-16 space-y-20 sm:space-y-28">
           {parts.map((part, index) => (
-            <article
+            <motion.article
               key={part.tag}
-              className="relative grid h-screen w-screen shrink-0 place-items-center overflow-hidden px-4 sm:px-8 lg:px-16"
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className={`grid items-center gap-8 lg:grid-cols-2 lg:gap-12 ${
+                index % 2 === 1 ? "lg:[&>div:first-child]:order-2" : ""
+              }`}
             >
-              <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-[92vw] max-w-[760px] -translate-x-1/2 -translate-y-1/2 opacity-20">
+              <div className="relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-3xl shadow-elevated noise">
                 <img
-                  src={carSide}
-                  alt=""
-                  width={1600}
+                  src={part.img}
+                  alt={part.title}
+                  width={800}
                   height={800}
                   loading="lazy"
-                  className="h-auto w-full drop-shadow-[0_30px_60px_rgba(255,140,40,0.25)]"
+                  className="h-full w-full object-cover"
                 />
-                <motion.div
-                  style={{ rotate: wheelRotate }}
-                  className="absolute left-[22%] bottom-[12%] h-[18%] w-[18%] rounded-full border border-amber-glow/40"
-                />
-                <motion.div
-                  style={{ rotate: wheelRotate }}
-                  className="absolute right-[20%] bottom-[12%] h-[18%] w-[18%] rounded-full border border-amber-glow/40"
-                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent" />
               </div>
 
-              <div className="relative z-10 grid w-full max-w-6xl items-center gap-8 lg:grid-cols-2 lg:gap-12">
-                <div className="relative mx-auto aspect-square w-full max-w-[320px] overflow-hidden rounded-3xl shadow-elevated noise sm:max-w-md">
-                  <img
-                    src={part.img}
-                    alt={part.title}
-                    width={800}
-                    height={800}
-                    loading="lazy"
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent" />
+              <div className="mx-auto max-w-xl text-center lg:text-left">
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-glow" />
+                  {part.tag} · 0{index + 1}/0{parts.length}
                 </div>
-
-                <div className="mx-auto max-w-xl text-center lg:text-left">
-                  <div className="mb-5 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
-                    <span className="h-1.5 w-1.5 rounded-full bg-amber-glow" />
-                    {part.tag} · 0{index + 1}/0{parts.length}
-                  </div>
-                  <h3 className="font-display text-4xl uppercase leading-tight sm:text-5xl lg:text-6xl">
-                    {part.title}
-                  </h3>
-                  <p className="mt-5 text-base text-muted-foreground sm:text-lg">{part.desc}</p>
-                </div>
+                <h3 className="font-display text-4xl uppercase leading-tight sm:text-5xl">
+                  {part.title}
+                </h3>
+                <p className="mt-5 text-base text-muted-foreground sm:text-lg">{part.desc}</p>
               </div>
-            </article>
+            </motion.article>
           ))}
-        </motion.div>
-
-        <div className="absolute bottom-6 left-0 right-0 z-30 px-4">
-          <div className="mx-auto h-[3px] max-w-md overflow-hidden rounded-full bg-border">
-            <motion.div
-              className="h-full bg-gradient-ember"
-              style={{ scaleX: scrollYProgress, transformOrigin: "left" }}
-            />
-          </div>
         </div>
       </div>
     </section>
