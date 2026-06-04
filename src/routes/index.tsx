@@ -39,7 +39,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main className="relative overflow-x-hidden">
+    <main className="relative overflow-x-clip">
       <Navbar />
       <Hero />
       <CarShowcase />

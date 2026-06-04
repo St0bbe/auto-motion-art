@@ -34,7 +34,7 @@ const parts = [
 ];
 
 export function CarShowcase() {
-  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
@@ -44,34 +44,34 @@ export function CarShowcase() {
   const wheelRotate = useTransform(scrollYProgress, [0, 1], [0, 1440]);
 
   return (
-    <section id="anatomia" className="relative bg-gradient-carbon">
-      <div className="relative z-10 px-4 pt-24 pb-10 text-center sm:pt-32">
-        <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
-          Rolagem lateral
-        </div>
-        <h2 className="mt-4 font-display text-3xl uppercase sm:text-5xl">
-          Cada peça <span className="text-gradient-ember">importa</span>
-        </h2>
-      </div>
-
-      <div
-        ref={sectionRef}
-        className="relative"
-        style={{ height: `${parts.length * 140}vh` }}
-      >
-        <div className="sticky top-0 h-screen overflow-hidden">
+    <section
+      id="anatomia"
+      ref={sectionRef}
+      className="relative bg-gradient-carbon"
+      style={{ height: `${parts.length * 115}vh` }}
+    >
+        <div className="sticky top-[72px] h-[calc(100vh-72px)] overflow-hidden">
           <div className="absolute inset-0 grid-bg opacity-30" />
           <div className="absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 bg-radial-glow opacity-60" />
 
+          <div className="absolute left-0 right-0 top-6 z-30 px-4 text-center sm:top-8">
+            <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
+              Rolagem lateral
+            </div>
+            <h2 className="mt-4 font-display text-3xl uppercase sm:text-5xl">
+              Cada peça <span className="text-gradient-ember">importa</span>
+            </h2>
+          </div>
+
 
         <motion.div
-          className="absolute left-0 top-0 z-10 flex h-screen will-change-transform"
+          className="absolute left-0 top-0 z-10 flex h-full will-change-transform"
           style={{ x, width: `${parts.length * 100}vw` }}
         >
           {parts.map((part, index) => (
             <article
               key={part.tag}
-              className="relative grid h-screen w-screen shrink-0 place-items-center overflow-hidden px-4 sm:px-8 lg:px-16"
+              className="relative grid h-full w-screen shrink-0 place-items-center overflow-hidden px-4 pt-28 sm:px-8 sm:pt-32 lg:px-16"
             >
               <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-[92vw] max-w-[760px] -translate-x-1/2 -translate-y-1/2 opacity-20">
                 <img
@@ -128,7 +128,6 @@ export function CarShowcase() {
             />
           </div>
         </div>
-      </div>
       </div>
     </section>
 
