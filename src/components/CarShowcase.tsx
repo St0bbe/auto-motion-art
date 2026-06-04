@@ -40,110 +40,95 @@ export function CarShowcase() {
     offset: ["start start", "end end"],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${(parts.length - 1) * 100}%`]);
-  const carScale = useTransform(scrollYProgress, [0, 0.35, 1], [0.9, 1.05, 0.9]);
-  const carRotate = useTransform(scrollYProgress, [0, 1], [0, -8]);
+  const x = useTransform(scrollYProgress, [0, 1], ["0vw", `-${(parts.length - 1) * 100}vw`]);
   const wheelRotate = useTransform(scrollYProgress, [0, 1], [0, 1440]);
-  const glowOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.9, 0.35]);
+  const progressScale = useTransform(scrollYProgress, [0.02, 0.98], [0, 1], { clamp: true });
 
   return (
     <section
       ref={ref}
       id="anatomia"
-      className="relative"
-      style={{ height: `${(parts.length + 1) * 100}vh` }}
+      className="relative overflow-visible"
+      style={{ height: `${parts.length * 100}vh` }}
     >
       <div className="sticky top-0 h-screen overflow-hidden bg-gradient-carbon">
         <div className="absolute inset-0 grid-bg opacity-30" />
+        <div className="absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 bg-radial-glow opacity-60" />
 
-        <motion.div
-          style={{ opacity: glowOpacity }}
-          className="absolute left-1/2 top-1/2 h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 bg-radial-glow"
-        />
-
-        <div className="relative z-20 mx-auto max-w-7xl px-4 pt-24 text-center">
+        <div className="absolute inset-x-0 top-0 z-30 mx-auto max-w-7xl px-4 pt-20 text-center sm:pt-24">
           <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
-            Role para avançar
+            Rolagem lateral
           </div>
 
           <h2 className="mt-4 font-display text-3xl uppercase sm:text-5xl">
             Cada peça <span className="text-gradient-ember">importa</span>
           </h2>
-
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
-            Nesta seção a tela permanece fixa enquanto a rolagem revela os serviços na horizontal.
-          </p>
         </div>
 
-        <div className="absolute inset-0 flex items-center">
-          <motion.div
-            style={{ scale: carScale, rotate: carRotate }}
-            className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-[90vw] max-w-[760px] -translate-x-1/2 -translate-y-1/2 opacity-20"
-          >
-            <img
-              src={carSide}
-              alt=""
-              width={1600}
-              height={800}
-              loading="lazy"
-              className="w-full h-auto drop-shadow-[0_30px_60px_rgba(255,140,40,0.25)]"
-            />
-            <motion.div
-              style={{ rotate: wheelRotate }}
-              className="absolute left-[22%] bottom-[12%] h-[18%] w-[18%] rounded-full border border-amber-glow/40"
-            />
-            <motion.div
-              style={{ rotate: wheelRotate }}
-              className="absolute right-[20%] bottom-[12%] h-[18%] w-[18%] rounded-full border border-amber-glow/40"
-            />
-          </motion.div>
+        <motion.div
+          className="absolute inset-0 z-10 flex h-screen w-max will-change-transform"
+          style={{ x }}
+        >
+          {parts.map((part, index) => (
+            <article
+              key={part.tag}
+              className="relative h-screen w-screen shrink-0 overflow-hidden px-4 sm:px-8 lg:px-16"
+            >
+              <motion.div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-[92vw] max-w-[760px] -translate-x-1/2 -translate-y-1/2 opacity-20">
+                <img
+                  src={carSide}
+                  alt=""
+                  width={1600}
+                  height={800}
+                  loading="lazy"
+                  className="w-full h-auto drop-shadow-[0_30px_60px_rgba(255,140,40,0.25)]"
+                />
+                <motion.div
+                  style={{ rotate: wheelRotate }}
+                  className="absolute left-[22%] bottom-[12%] h-[18%] w-[18%] rounded-full border border-amber-glow/40"
+                />
+                <motion.div
+                  style={{ rotate: wheelRotate }}
+                  className="absolute right-[20%] bottom-[12%] h-[18%] w-[18%] rounded-full border border-amber-glow/40"
+                />
+              </motion.div>
 
-          <motion.div
-            style={{ x }}
-            className="relative z-10 flex h-full w-max items-center will-change-transform"
-          >
-            {parts.map((part, index) => (
-              <article
-                key={part.tag}
-                className="grid h-screen w-screen shrink-0 place-items-center px-4 pt-40 pb-16 sm:px-8 lg:px-16"
-              >
-                <div className="grid w-full max-w-6xl items-center gap-8 lg:grid-cols-2 lg:gap-12">
-                  <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-3xl shadow-elevated noise sm:max-w-md">
-                    <img
-                      src={part.img}
-                      alt={part.title}
-                      width={800}
-                      height={800}
-                      loading="lazy"
-                      className="h-full w-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent" />
-                  </div>
-
-                  <div className="mx-auto max-w-xl text-center lg:text-left">
-                    <div className="mb-5 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
-                      <span className="h-1.5 w-1.5 rounded-full bg-amber-glow" />
-                      {part.tag} · 0{index + 1}/0{parts.length}
-                    </div>
-
-                    <h3 className="font-display text-4xl uppercase leading-tight sm:text-5xl lg:text-6xl">
-                      {part.title}
-                    </h3>
-
-                    <p className="mt-5 text-base text-muted-foreground sm:text-lg">
-                      {part.desc}
-                    </p>
-                  </div>
+              <div className="relative z-10 mx-auto grid h-screen w-full max-w-6xl items-center gap-8 pt-36 pb-16 lg:grid-cols-2 lg:gap-12 lg:pt-28">
+                <div className="relative mx-auto aspect-square w-full max-w-[320px] overflow-hidden rounded-3xl shadow-elevated noise sm:max-w-md">
+                  <img
+                    src={part.img}
+                    alt={part.title}
+                    width={800}
+                    height={800}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent" />
                 </div>
-              </article>
-            ))}
-          </motion.div>
-        </div>
 
-        <div className="absolute bottom-6 left-0 right-0 z-20 px-4">
+                <div className="mx-auto max-w-xl text-center lg:text-left">
+                  <div className="mb-5 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-glow" />
+                    {part.tag} · 0{index + 1}/0{parts.length}
+                  </div>
+
+                  <h3 className="font-display text-4xl uppercase leading-tight sm:text-5xl lg:text-6xl">
+                    {part.title}
+                  </h3>
+
+                  <p className="mt-5 text-base text-muted-foreground sm:text-lg">
+                    {part.desc}
+                  </p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </motion.div>
+
+        <div className="absolute bottom-6 left-0 right-0 z-30 px-4">
           <div className="mx-auto max-w-md overflow-hidden rounded-full bg-border h-[3px]">
             <motion.div
-              style={{ scaleX: scrollYProgress, transformOrigin: "left" }}
+              style={{ scaleX: progressScale, transformOrigin: "left" }}
               className="h-full bg-gradient-ember"
             />
           </div>
