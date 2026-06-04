@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { useIsMobile } from "@/hooks/use-mobile";
 import carSide from "@/assets/car-side.png";
 import partEngine from "@/assets/part-engine.jpg";
 import partBrake from "@/assets/part-brake.jpg";
@@ -71,9 +70,9 @@ function PartCard({
   );
 }
 
-function MobileShowcase() {
+function MobileShowcase({ id }: { id?: string }) {
   return (
-    <section id="anatomia" className="relative bg-gradient-carbon py-20">
+    <section id={id} className="relative bg-gradient-carbon py-20">
       <div className="absolute inset-0 grid-bg opacity-30" />
       <div className="relative px-4 text-center">
         <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
@@ -169,6 +168,14 @@ function DesktopShowcase() {
 }
 
 export function CarShowcase() {
-  const isMobile = useIsMobile();
-  return isMobile ? <MobileShowcase /> : <DesktopShowcase />;
+  return (
+    <>
+      <div className="lg:hidden">
+        <MobileShowcase id="anatomia" />
+      </div>
+      <div className="hidden lg:block">
+        <DesktopShowcase />
+      </div>
+    </>
+  );
 }
