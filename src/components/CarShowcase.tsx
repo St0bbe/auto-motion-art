@@ -50,11 +50,11 @@ export function CarShowcase() {
       className="relative bg-gradient-carbon"
       style={{ height: `${parts.length * 115}vh` }}
     >
-        <div className="sticky top-0 h-screen overflow-hidden">
+        <div className="sticky top-[72px] h-[calc(100vh-72px)] overflow-hidden">
           <div className="absolute inset-0 grid-bg opacity-30" />
           <div className="absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 bg-radial-glow opacity-60" />
 
-          <div className="absolute left-0 right-0 top-20 z-30 px-4 text-center sm:top-24">
+          <div className="absolute left-0 right-0 top-6 z-30 px-4 text-center sm:top-8">
             <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-[10px] tracking-[0.3em] uppercase text-amber-glow">
               Rolagem lateral
             </div>
@@ -65,13 +65,13 @@ export function CarShowcase() {
 
 
         <motion.div
-          className="absolute left-0 top-0 z-10 flex h-screen will-change-transform"
+          className="absolute left-0 top-0 z-10 flex h-full will-change-transform"
           style={{ x, width: `${parts.length * 100}vw` }}
         >
           {parts.map((part, index) => (
             <article
               key={part.tag}
-              className="relative grid h-screen w-screen shrink-0 place-items-center overflow-hidden px-4 pt-28 sm:px-8 sm:pt-32 lg:px-16"
+              className="relative grid h-full w-screen shrink-0 place-items-center overflow-hidden px-4 pt-28 sm:px-8 sm:pt-32 lg:px-16"
             >
               <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-[92vw] max-w-[760px] -translate-x-1/2 -translate-y-1/2 opacity-20">
                 <img
